@@ -9,7 +9,8 @@ interface IUser {
     address: string[],
     locations: string[],
     email: string,
-    role: string
+    role: string,
+    gps: number[],
 }
 
 @modelOptions({ schemaOptions: { collection: 'User' } })
@@ -33,6 +34,8 @@ class User {
     role?: string;
     @prop()
     email?: string;
+    @prop()
+    gps?: number[];
     
     public __id(_id: mongoose.Types.ObjectId) {
         this._id = _id;
@@ -72,6 +75,10 @@ class User {
     }
     public _email(email: string) {
         this.email = email;
+        return this;
+    }
+    public _gps(gps: number[]) {
+        this.gps = gps;
         return this;
     }
     // public id: string;
