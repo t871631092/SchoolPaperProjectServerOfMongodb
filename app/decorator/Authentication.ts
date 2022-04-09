@@ -18,15 +18,3 @@ export function AuthVerify(role?: string) {
         }
     }
 }
-export function RequestParam1(name) {
-    console.log(name)
-    return (target, propertyKey, index) => {
-        console.log(target,propertyKey,index,name)
-    };
-}
-export function test(target, propertyKey, index) {
-    console.log('test==========================')
-    console.log(target)
-    console.log(propertyKey)
-    console.log(index)
-};

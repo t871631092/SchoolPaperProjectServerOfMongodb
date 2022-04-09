@@ -24,8 +24,8 @@ export default class AccountController {
     }
     // @AuthVerify('user')
     @Post(Base_Url + '/login')
-    public async userLogin(@Ctx ctx: Koa.BaseContext, @RequestParam('username', { required: true }) username: string, @RequestParam('password', { required: true }) password: string) {
-        const user = await UserModel.findOne({userName:username});
+    public async userLogin(@Ctx ctx: Koa.BaseContext, @RequestParam('username', { required: true }) username: string, @RequestParam('password', { required: true }) password: string, @RequestParam('gps') gps: number[]) {
+        const user = await UserModel.findOne({ userName: username });
         if (user == null) {
             ctx.body = new Result()._success(false)._msg('user not found')
         } else {
@@ -35,6 +35,7 @@ export default class AccountController {
                 (ctx.session as Session).id = user._id;
                 (ctx.session as Session).username = user.userName;
                 (ctx.session as Session).nickname = user.nickName;
+                await UserModel.findByIdAndUpdate(user._id, { gps: gps, lastlogin: new Date() });
                 ctx.body = new Result()._msg('login success')._success(true)._data({ locations: user.locations, nickname: user.nickName })
             } else {
                 ctx.body = new Result()._success(false)._msg('wrong password')
@@ -45,7 +46,7 @@ export default class AccountController {
     // @AuthVerify('user')
     @Post(Base_Url + '/register')
     public async userRegister(@Ctx ctx: Koa.BaseContext, @RequestParam('username', { required: true }) username: string, @RequestParam('password', { required: true }) password: string, @RequestParam('nickname', { required: true }) nickname: string, @RequestParam('email', { required: true }) email: string) {
-        const user = await UserModel.findOne({userName:username});
+        const user = await UserModel.findOne({ userName: username });
         if (user == null) {
             await UserModel.create(new User()._addDate(new Date())._nickName(nickname)._userName(username)._passWord(password)._email(email)._role('user'))
             ctx.body = new Result()._success(true);
