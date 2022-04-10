@@ -3,9 +3,11 @@ import { useControllers } from 'koa-controllers';
 const session = require('koa-session');
 import { getModelForClass, mongoose } from "@typegoose/typegoose";
 import { User } from "./models/user.model";
+import koaCors = require('koa-cors');
 import './mongoUtil/db';
 
 const app = new Koa();
+app.use(koaCors);
 const UserModel = getModelForClass(User)
 UserModel.findOne({ role: 'admin' }, (error, res) => {
     console.log(res)
@@ -24,7 +26,7 @@ useControllers(app, __dirname + '/controllers/*.ts', {
         dest: './uploads'
     }
 });
-app.listen(8080);
+app.listen(8088);
 
 
 app.use(session(app));
