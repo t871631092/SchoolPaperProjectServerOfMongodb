@@ -17,6 +17,7 @@
   "author": "kqq",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^3.3.0",
     "@typegoose/typegoose": "^9.7.1",
     "@types/cors": "^2.8.12",
     "@types/koa": "^2.13.4",
@@ -28,6 +29,7 @@
     "koa-controllers": "^0.1.6",
     "koa-cors": "^0.0.16",
     "koa-session": "^6.2.0",
+    "koa2-cors": "^2.0.6",
     "mongoose": "^6.2.10",
     "nodemon": "^2.0.15",
     "reflect-metadata": "^0.1.13",
@@ -36,57 +38,8 @@
     "typescript": "^4.6.3"
   },
   "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "plugin:vue/vue3-recommended"
-    ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },
-    "rules": {
-      "vue/max-attributes-per-line": ["error",
-        {
-        "singleline": 5
-        }
-      ],
-      "vue/script-setup-uses-vars": "error",
-      "object-curly-spacing": ["error", "always"
-      ],
-      "array-bracket-newline": ["error",
-        {
-          "minItems": 5
-        }
-      ],
-      "arrow-spacing": "error",
-      "vue/block-tag-newline": ["error",
-        {
-          "singleline": "always",
-          "multiline": "always",
-          "maxEmptyLines": 0,
-          "blocks": {
-            "script": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            },
-            "template": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            },
-            "my-block": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            }
-          }
-        }
-      ]
     }
   }
 }

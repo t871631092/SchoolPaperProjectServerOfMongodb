@@ -3,35 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div> -->
-  <el-container direction="horizontal">
-    <el-aside width="200px">
-123
-    </el-aside>
-    <el-container>
-      <el-header height="80px">
-        header
-        </el-header>
-      <el-main :style="{ height: AppHeight + 'px' }"> 
-        <router-view />
-        </el-main>
-      <el-footer height="60px">
-        footer
-        </el-footer>
-    </el-container>
-  </el-container>
+  <router-view />
 </template>
-<script>
-export default {
-  setup() {
-    return {
-      AppHeight: 200,
-    };
-  },
-  created() {
-    this.AppHeight = window.innerHeight - 140;
-  },
-};
-</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

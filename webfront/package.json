@@ -27,65 +27,6 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^7.20.0"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "plugin:vue/vue3-recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "vue/max-attributes-per-line": [
-        "error",
-        {
-          "singleline": 5
-        }
-      ],
-      "vue/script-setup-uses-vars": "error",
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ],
-      "array-bracket-newline": [
-        "error",
-        {
-          "minItems": 5
-        }
-      ],
-      "arrow-spacing": "error",
-      "vue/block-tag-newline": [
-        "error",
-        {
-          "singleline": "always",
-          "multiline": "always",
-          "maxEmptyLines": 0,
-          "blocks": {
-            "script": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            },
-            "template": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            },
-            "my-block": {
-              "singleline": "always",
-              "multiline": "always",
-              "maxEmptyLines": 0
-            }
-          }
-        }
-      ]
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",

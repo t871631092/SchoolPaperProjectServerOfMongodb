@@ -20,6 +20,8 @@ export default class AccountController {
                 nickname: ctx.session.nickname,
                 locations: user?.locations
             })
+        }else{
+            ctx.body = new Result()._success(false);
         }
     }
     // @AuthVerify('user')
@@ -58,7 +60,7 @@ export default class AccountController {
     @AuthVerify('user')
     @Post(Base_Url + '/changepassword')
     public async userChangePw(@Ctx ctx: Koa.BaseContext) {
-
+        ctx.body = new Result()._success(true)._msg('wrong password')
     }
     @AuthVerify('user')
     @Post(Base_Url + '/saveaddress')
