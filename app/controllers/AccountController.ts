@@ -6,6 +6,7 @@ import { IUser, User } from "../models/user.model";
 import { Result } from "../models/result.model";
 import { Session } from "koa-session";
 import { Record } from '../models/record.model';
+const md5 = require("md5");
 const Base_Url = '/account'
 
 const UserModel = getModelForClass(User)
@@ -56,7 +57,7 @@ export class AccountController {
         if (user == null) {
             return new Result()._success(false)._msg('user not found')
         } else {
-            if (user.passWord == password) {
+            if (md5(user.passWord) == md5(password)) {
                 (ctx.session as Session).islogin = true;
                 (ctx.session as Session).role = user.role;
                 (ctx.session as Session).id = user._id;
