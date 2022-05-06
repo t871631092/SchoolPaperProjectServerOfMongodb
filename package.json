@@ -25,6 +25,7 @@
     "@types/koa-session": "^5.10.6",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^17.0.23",
+    "amala": "^8.0.2",
     "koa": "^2.13.4",
     "koa-controllers": "^0.1.6",
     "koa-cors": "^0.0.16",

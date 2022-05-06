@@ -1,17 +1,31 @@
-import { Controller, Ctx, Get, Post } from "koa-controllers";
+import { Controller, Ctx, Req, Body, Get, Post, Delete, Query, Flow, Params, Version } from 'amala';
 import * as Koa from 'koa';
-import { AuthVerify } from "../decorator/authentication";
+import { AuthVerify, UserVerify, AdminVerify, LoginVerify } from "../decorator/authentication";
 import { Result } from "../models/result.model";
 import { getModelForClass, mongoose } from "@typegoose/typegoose";
 import { User } from "../models/user.model";
+import { Record } from '../models/record.model';
 const Base_Url = '/info'
 
+
 const UserModel = getModelForClass(User)
-@Controller
-export default class InfoController {
-    @AuthVerify('admin')
-    @Get(Base_Url + '/day30')
-    public async getUserDay30Register(@Ctx ctx: Koa.BaseContext) {
+const RecordModel = getModelForClass(Record)
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+@Controller('info')
+export class InfoController {
+    @Get('/day30')
+    @Flow([LoginVerify,AdminVerify])
+    public async getUserDay30Register(@Ctx() ctx: Koa.BaseContext) {
         let days = 30;
         const data: any[] = [];
         const date = new Date();
@@ -27,16 +41,34 @@ export default class InfoController {
             days -= 1
             date.setDate(date.getDate() - 1);
         }
-        ctx.body = new Result()._data(data)._success(true);
+        return new Result()._data(data)._success(true);
     }
-    @AuthVerify('admin')
-    @Get(Base_Url + '/gps')
-    public async getGpss(@Ctx ctx: Koa.BaseContext) {
-        ctx.body = new Result()._success(true)._data((await UserModel.find({}, { gps: 1, _id: 0 })).filter(e => e.gps&&e.gps?.length>0).map(v=>v.gps));
+
+    @Get('/day30Open')
+    // @Flow([LoginVerify,AdminVerify])
+    public async getRecordDay30(@Ctx() ctx: Koa.BaseContext) {
+        let days = 30;
+        const data: any[] = [];
+        const date = new Date();
+        while (days > 0) {
+            let result = await RecordModel.findOne({ addDate: formatDate(date) })
+            if (result) {
+                data.push(result)
+            }
+            days -= 1
+            date.setDate(date.getDate() - 1);
+        }
+        return new Result()._data(data)._success(true);
     }
-    @AuthVerify('admin')
-    @Get(Base_Url + '/location')
-    public async getUserGpsMap(@Ctx ctx: Koa.BaseContext) {
+    @Get('/gps')
+    @Flow([LoginVerify,AdminVerify])
+    public async getGpss(@Ctx() ctx: Koa.BaseContext) {
+        return new Result()._success(true)._data((await UserModel.find({}, { gps: 1, _id: 0 })).filter(e => e.gps&&e.gps?.length>0).map(v=>v.gps));
+    }
+
+    @Get('/location')
+    @Flow([LoginVerify,AdminVerify])
+    public async getUserGpsMap(@Ctx() ctx: Koa.BaseContext) {
         const data = {}
         const result = await UserModel.find({}, { locations: 1, _id: 0 })
         result.forEach(e => {
@@ -49,7 +81,7 @@ export default class InfoController {
                 }
             })
         })
-        ctx.body = new Result()._success(true)._data(data);
+        return new Result()._success(true)._data(data);
     }
 
 }

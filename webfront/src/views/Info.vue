@@ -2,15 +2,15 @@
   <div class="info">
     <el-row>
       <el-col :span="12">
-        <div id="customerChart1" style="height: 300px"></div>
+        <div class="echart" id="customerChart1" style="height: 300px"></div>
       </el-col>
       <el-col :span="12">
-        <div id="customerChart2" style="height: 300px"></div>
+        <div class="echart" id="customerChart2" style="height: 300px"></div>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="24">
-        <div id="customerChart3" style="height: 300px"></div>
+        <div class="echart" id="customerChart3" style="height: 300px"></div>
       </el-col>
     </el-row>
   </div>
@@ -98,9 +98,23 @@ export default {
       });
       window.onresize = function () {
         //自适应大小
-        myChart.resize();
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
       };
     });
   },
+  beforeDestory(){
+    window.onresize = null;
+  }
 };
 </script>
+<style scoped>
+.echart{
+  margin: 25px;
+  padding: 25px;
+  margin-top: 0;
+  border-radius: 25px;
+  box-shadow: 0 0 5px 1px lightgray;
+}
+</style>

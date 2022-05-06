@@ -1,35 +1,43 @@
-import { Controller, Ctx, Get, Post, RequestParam } from "koa-controllers";
+import { Controller, Ctx, Req, Body, Get, Post, Delete, Query, Flow, Params, Version } from 'amala';
 import * as Koa from 'koa';
-import { AuthVerify } from "../decorator/authentication";
+import { AuthVerify, UserVerify, AdminVerify, LoginVerify } from "../decorator/authentication";
 import { User } from "../models/user.model";
 import { Result } from "../models/result.model";
 import { getModelForClass } from "@typegoose/typegoose";
 const Base_Url = '/user'
 const UserModel = getModelForClass(User)
-@Controller
-export default class UserController {
-    // @AuthVerify('admin')
-    @Post(Base_Url + '/getuser')
-    public async getUser(@Ctx ctx: Koa.BaseContext, @RequestParam('page') page: number, @RequestParam('limit') limit: number) {
-        console.log('getuser')
-        const data = await UserModel.find({}, { passWord: 0 }).skip((page - 1) * limit).limit(limit);
+@Controller('/user')
+export class UserController {
+
+    @Post('/getuser')
+    @Flow([LoginVerify, AdminVerify])
+    public async getUser(@Body('page') page: number, @Body('limit') limit: number, @Body('name') name: string, @Body('address') address: string, @Ctx() ctx: any) {
+        const params: any = {};
+        if (name) {
+            params.userName = name;
+        }
+        if (address) {
+            params.address = address;
+        }
+        const data = await UserModel.find(params, { passWord: 0 }).skip((page - 1) * limit).limit(limit);
+        const count = await UserModel.count(params);
         console.log(data)
-        ctx.body = new Result()._success(true)._data(data);
+        return new Result()._success(true)._data(data)._count(count);
     }
     // @AuthVerify('admin')
-    @Post(Base_Url + '/del')
-    public async delUser(@Ctx ctx: Koa.BaseContext, @RequestParam('id') id: string) {
+    @Post('/del')
+    public async delUser(@Ctx() ctx: Koa.BaseContext, @Params('id') id: string) {
         await UserModel.findByIdAndDelete(id)
-        ctx.body = new Result()._success(true);
+        return new Result()._success(true);
     }
     // @AuthVerify('admin')
-    @Post(Base_Url + '/changpw')
-    public async updateUserPassWord(@Ctx ctx: Koa.BaseContext) {
+    @Post('/changpw')
+    public async updateUserPassWord(@Ctx() ctx: Koa.BaseContext) {
 
     }
     // @AuthVerify('admin')
-    @Post(Base_Url + '/add')
-    public async addUser(@Ctx ctx: Koa.BaseContext) {
+    @Post('/add')
+    public async addUser(@Ctx() ctx: Koa.BaseContext) {
 
     }
 

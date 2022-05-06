@@ -81,32 +81,5 @@ class User {
         this.gps = gps;
         return this;
     }
-    // public id: string;
-    // public userName: string;
-    // public passWord: string;
-    // public nickName: string;
-    // public addDate: Date;
-    // public lastLogin: Date;
-    // public address: string[];
-    // public location: string[];
-    // constructor(
-    //     id: string,
-    //     userName: string,
-    //     passWord: string,
-    //     nickName: string,
-    //     addDate: Date,
-    //     lastLogin: Date,
-    //     address: string[],
-    //     location: string[]
-    // ) {
-    //     this.id = id;
-    //     this.userName = userName;
-    //     this.passWord = passWord;
-    //     this.nickName = nickName;
-    //     this.addDate = addDate;
-    //     this.lastLogin = lastLogin;
-    //     this.address = address;
-    //     this.location = location;
-    // }
 }
 export { User, IUser }

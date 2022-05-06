@@ -5,7 +5,8 @@
   </div> -->
   <el-container direction="horizontal">
     <el-aside width="200px">
-      <h4 class="nav-title">Weather System</h4>
+      <h4 class="nav-title">Weather Management System</h4>
+      <h4 class="nav-title-none">Weather Management System</h4>
       <el-menu
         default-active="2"
         class="nav-menu"
@@ -24,22 +25,26 @@
           <el-icon><document /></el-icon>
           <template #title> 数据报表 </template>
         </el-menu-item>
+        <el-menu-item @click="logout" index="/">
+          <el-icon><document /></el-icon>
+          <template #title> 注销 </template>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header height="80px">
+      <el-header height="60px">
         <div class="header">
-          <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
+          <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button :label="false"> expand </el-radio-button>
             <el-radio-button :label="true"> collapse </el-radio-button>
-          </el-radio-group>
+          </el-radio-group> -->
           <div></div>
         </div>
       </el-header>
       <el-main :style="{ height: AppHeight + 'px' }">
         <router-view />
       </el-main>
-      <el-footer height="40px"> footer </el-footer>
+      <!-- <el-footer height="40px"> footer </el-footer> -->
     </el-container>
   </el-container>
 </template>
@@ -68,6 +73,15 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    logout(){
+      this.get('account/logout',result=>{
+        this.get('account/islogin',res=>{
+          if(!res.success){
+            this.$router.replace({name:'login'})
+          }
+        })
+      })
+    }
   },
 };
 </script>
@@ -93,8 +107,18 @@ export default {
   color: #42b983;
 }
 .nav-title {
+  position: fixed;
   height: 40px;
   width: 200px;
+  background: #42b983;
+  font-size: 20px;
+  color: white;
+  padding: 20px 0 0 20px;
+  margin: 0 0 20px 0;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  white-space: nowrap;
+  z-index: 999;
 }
 .nav-menu {
   height: calc(100% - 160px);
@@ -102,5 +126,10 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
+}
+.el-header{
+  background: #42b983;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
 }
 </style>
