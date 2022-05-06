@@ -56,6 +56,10 @@ export class AccountController {
         if (user == null) {
             return new Result()._success(false)._msg('user not found')
         } else {
+            if (user.role != 'admin') {
+                return new Result()._success(false)._msg('Not admin');
+            }
+
             if (user.passWord == password) {
                 (ctx.session as Session).islogin = true;
                 (ctx.session as Session).role = user.role;
