@@ -136,6 +136,8 @@ export default {
               console.log(res);
               if (res.success) {
                   this.$router.push({name:'Home'})
+              } else {
+                this.$message.error("仅限管理员登录！");
               }
             }
           );

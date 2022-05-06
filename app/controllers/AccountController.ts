@@ -55,10 +55,10 @@ export class AccountController {
         console.log(session)
         const user = await UserModel.findOne({ userName: username });
         if (user == null) {
-            return new Result()._success(false)._msg('user not found')
+            return new Result()._success(false)._msg('用户不存在')
         } else {
             if (user.role != 'admin') {
-                return new Result()._success(false)._msg('Not admin');
+                return new Result()._success(false)._msg('仅限管理员登陆!');
             }
 
             if (md5(user.passWord) == md5(password)) {
@@ -72,7 +72,7 @@ export class AccountController {
                 console.log(session)
                 return new Result()._msg('login success')._success(true)._data({ locations: user.locations, nickname: user.nickName })
             } else {
-                return new Result()._success(false)._msg('wrong password')
+                return new Result()._success(false)._msg('密码错误')
             }
         }
 
