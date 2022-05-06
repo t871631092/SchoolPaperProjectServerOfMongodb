@@ -24,7 +24,7 @@ function formatDate(date) {
 @Controller('info')
 export class InfoController {
     @Get('/day30')
-    @Flow([LoginVerify,AdminVerify])
+    // @Flow([LoginVerify,AdminVerify])
     public async getUserDay30Register(@Ctx() ctx: Koa.BaseContext) {
         let days = 30;
         const data: any[] = [];
@@ -33,7 +33,7 @@ export class InfoController {
             let lastdate = new Date().setDate(date.getDate() - 1);
             let result = await UserModel.find({ addDate: { $lt: date, $gt: lastdate } })
             if (result) {
-                let datestring = date.getDate();
+                let datestring = formatDate(date);
                 let d: any = {};
                 d[datestring] = result.length
                 data.push(d)
@@ -67,7 +67,7 @@ export class InfoController {
     }
 
     @Get('/location')
-    @Flow([LoginVerify,AdminVerify])
+    // @Flow([LoginVerify,AdminVerify])
     public async getUserGpsMap(@Ctx() ctx: Koa.BaseContext) {
         const data = {}
         const result = await UserModel.find({}, { locations: 1, _id: 0 })

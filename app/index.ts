@@ -73,7 +73,7 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
         }
     }
     const UserCount = await UserModel.count({})
-    if (UserCount < 5000) {
+    if (UserCount < 8000) {
         let d = new Date('2022-06-01');
         let i = 0;
         while (i < 60) {
@@ -85,7 +85,12 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
             if (day.length < 2) day = '0' + day;
 
             const datestr = [year, month, day].join('-');
-            await RecordModel.create(new Record()._addDate(datestr)._time(Math.floor(Math.random() * 1000)));
+            const a = Math.floor(Math.random() * (500 - 200 + 1)) + 200;
+            const address = Math.floor(Math.random() * (12 - 1 + 1)) + 1;
+            const addresss = ['广州', '深圳', '上海', '杭州', '北京', '成都', '南京', '江门', '苏州', '香港', '澳门', '台湾']
+            for (let x = 0; x < a; x++) {
+                await UserModel.create(new User()._userName('user' + a + x)._passWord('user')._nickName('user' + a + x)._role('user')._addDate(d)._locations([addresss[address]]));
+            }
             d.setDate(d.getDate() - 1);
             i++;
         }

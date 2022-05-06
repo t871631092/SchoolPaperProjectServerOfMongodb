@@ -29,7 +29,6 @@ export class AccountController {
         if (ctx.session?.islogin) {
             const user = await UserModel.findOne({ id: ctx.session.id })
             const rec = await RecordModel.findOne({ addDate: formatDate(new Date()) })
-            console.log(rec)
             if (rec) {
                 rec.time = rec ? (rec.time as any) + 1 : 1
                 rec.save();
