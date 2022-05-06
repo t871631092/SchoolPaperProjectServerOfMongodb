@@ -9,6 +9,7 @@ import { AccountController } from './controllers/AccountController';
 import { UserController } from './controllers/UserController';
 import { InfoController } from './controllers/InfoController';
 import { Record } from './models/record.model';
+const md5 = require("md5");
 
 const koaApp = new Koa();
 
@@ -44,12 +45,12 @@ koaApp.use(session({
 const UserModel = getModelForClass(User)
 UserModel.findOne({ role: 'admin' }, (error, res) => {
     if (res == null) {
-        UserModel.create(new User()._userName('admin')._passWord('admin')._nickName('admin')._role('admin'));
+        UserModel.create(new User()._userName('admin')._passWord(md5('admin'))._nickName('admin')._role('admin'));
     }
 });
 UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
     if (res == null) {
-        UserModel.create(new User()._userName('user')._passWord('user')._nickName('user')._role('user'));
+        UserModel.create(new User()._userName('user')._passWord(md5('user'))._nickName('user')._role('user'));
     }
 });
 (async function () {
@@ -89,7 +90,7 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
             const address = Math.floor(Math.random() * (12 - 1 + 1)) + 1;
             const addresss = ['广州', '深圳', '上海', '杭州', '北京', '成都', '南京', '江门', '苏州', '香港', '澳门', '台湾']
             for (let x = 0; x < a; x++) {
-                await UserModel.create(new User()._userName('user' + a + x)._passWord('user')._nickName('user' + a + x)._role('user')._addDate(d)._locations([addresss[address]]));
+                await UserModel.create(new User()._userName('user' + a + x)._passWord(md5('password'))._nickName('user' + a + x)._role('user')._addDate(d)._locations([addresss[address]]));
             }
             d.setDate(d.getDate() - 1);
             i++;

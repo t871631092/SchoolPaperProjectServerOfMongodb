@@ -30,6 +30,7 @@
     "koa-cors": "^0.0.16",
     "koa-session": "^6.2.0",
     "koa2-cors": "^2.0.6",
+    "md5": "^2.3.0",
     "mongoose": "^6.2.10",
     "nodemon": "^2.0.15",
     "reflect-metadata": "^0.1.13",
