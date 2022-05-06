@@ -84,8 +84,8 @@ export default {
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 3) {
-        callback(new Error("密码最少为6位字符！"));
+      if (value.length < 4) {
+        callback(new Error("密码最少为4位字符！"));
       } else {
         callback();
       }
@@ -137,7 +137,7 @@ export default {
               if (res.success) {
                   this.$router.push({name:'Home'})
               } else {
-                this.$message.error("仅限管理员登录！");
+                this.$message.error(res.msg);
               }
             }
           );
