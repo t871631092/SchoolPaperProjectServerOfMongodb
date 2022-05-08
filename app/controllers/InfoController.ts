@@ -30,12 +30,13 @@ export class InfoController {
         const data: any[] = [];
         const date = new Date();
         while (days > 0) {
-            let lastdate = new Date().setDate(date.getDate() - 1);
+            let lastdate = new Date(date).setDate(date.getDate() - 1);
             let result = await UserModel.find({ addDate: { $lt: date, $gt: lastdate } })
             if (result) {
                 let datestring = formatDate(date);
                 let d: any = {};
-                d[datestring] = result.length
+                d.str = datestring.substring(5, 10);
+                d.data = result.length;
                 data.push(d)
             }
             days -= 1
@@ -61,9 +62,22 @@ export class InfoController {
         return new Result()._data(data)._success(true);
     }
     @Get('/gps')
-    @Flow([LoginVerify,AdminVerify])
+    @Flow([LoginVerify, AdminVerify])
     public async getGpss(@Ctx() ctx: Koa.BaseContext) {
-        return new Result()._success(true)._data((await UserModel.find({}, { gps: 1, _id: 0 })).filter(e => e.gps&&e.gps?.length>0).map(v=>v.gps));
+        const arr = (await UserModel.find({}, { address: 1, _id: 0 })).filter(e => e.address && e.address?.length > 0).map(v => v.address);
+        const data = {};
+        arr.forEach(element => {
+            if (element && element.length > 0) {
+                element.forEach(e => {
+                    if (e && data[e] && data[e] > 0) {
+                        data[e] += 1;
+                    } else {
+                        data[e] = 1;
+                    }
+                })
+            }
+        });
+        return new Result()._success(true)._data(data);
     }
 
     @Get('/location')

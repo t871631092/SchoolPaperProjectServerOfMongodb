@@ -74,8 +74,8 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
         }
     }
     const UserCount = await UserModel.count({})
-    if (UserCount < 8000) {
-        let d = new Date('2022-06-01');
+    if (UserCount < 5000) {
+        let d = new Date('2022-05-14');
         let i = 0;
         while (i < 60) {
             let month = '' + (d.getMonth() + 1),
@@ -87,10 +87,14 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
 
             const datestr = [year, month, day].join('-');
             const a = Math.floor(Math.random() * (500 - 200 + 1)) + 200;
-            const address = Math.floor(Math.random() * (12 - 1 + 1)) + 1;
+            const address = Math.floor(Math.random() * (12 - 0 + 1)) + 0;
             const addresss = ['广州', '深圳', '上海', '杭州', '北京', '成都', '南京', '江门', '苏州', '香港', '澳门', '台湾']
             for (let x = 0; x < a; x++) {
-                await UserModel.create(new User()._userName('user' + a + x)._passWord(md5('password'))._nickName('user' + a + x)._role('user')._addDate(d)._locations([addresss[address]]));
+                let addressstr = addresss[address]
+                if (x < 50) {
+                    addressstr = addresss[0]
+                }
+                await UserModel.create(new User()._userName('user' + a + x)._passWord(md5('password'))._nickName('user' + a + x)._role('user')._addDate(d)._locations([addressstr])._address([addressstr]));
             }
             d.setDate(d.getDate() - 1);
             i++;

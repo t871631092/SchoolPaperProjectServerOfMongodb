@@ -61,7 +61,7 @@ export class AccountController {
                 return new Result()._success(false)._msg('仅限管理员登陆!');
             }
 
-            if (md5(user.passWord) == md5(password)) {
+            if (user.passWord== md5(password)) {
                 (ctx.session as Session).islogin = true;
                 (ctx.session as Session).role = user.role;
                 (ctx.session as Session).id = user._id;
