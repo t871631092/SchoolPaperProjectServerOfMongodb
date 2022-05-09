@@ -52,7 +52,7 @@ export class AccountController {
     // @AuthVerify('user')
     @Post('/login')
     public async userLogin(@Ctx() ctx: any, @Body('username') username: string, @Body('password') password: string, @Body('gps') gps: number[], @Session2() session) {
-        console.log(session)
+        console.log(ctx.session,username,password)
         const user = await UserModel.findOne({ userName: username });
         if (user == null) {
             return new Result()._success(false)._msg('用户不存在')
@@ -79,14 +79,15 @@ export class AccountController {
     }
     // @AuthVerify('user')
     @Post('/register')
-    public async userRegister(@Ctx() ctx: Koa.BaseContext, @Params('username') username: string, @Params('password') password: string, @Params('nickname') nickname: string, @Params('email') email: string) {
+    public async userRegister(@Ctx() ctx: Koa.BaseContext, @Body('username') username: string, @Body('password') password: string, @Body('nickname') nickname: string, @Body('email') email: string) {
+        console.log(username,password,nickname,email)
         const user = await UserModel.findOne({ userName: username });
         if (user == null) {
             await UserModel.create(new User()._addDate(new Date())._nickName(nickname)._userName(username)._passWord(password)._email(email)._role('user'))
-            ctx.body = new Result()._success(true);
+            return new Result()._success(true);
         } else {
             console.log(user)
-            ctx.body = new Result()._success(false)._msg('wrong password')
+            return new Result()._success(false)._msg('用户已经存在')
         }
     }
     // @AuthVerify('user')
