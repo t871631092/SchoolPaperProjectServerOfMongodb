@@ -24,7 +24,7 @@ function formatDate(date) {
 @Controller('info')
 export class InfoController {
     @Get('/day30')
-    @Flow([LoginVerify,AdminVerify])
+    @Flow([LoginVerify, AdminVerify])
     public async getUserDay30Register(@Ctx() ctx: Koa.BaseContext) {
         let days = 30;
         const data: any[] = [];
@@ -46,7 +46,7 @@ export class InfoController {
     }
 
     @Get('/day30Open')
-    @Flow([LoginVerify,AdminVerify])
+    @Flow([LoginVerify, AdminVerify])
     public async getRecordDay30(@Ctx() ctx: Koa.BaseContext) {
         let days = 30;
         const data: any[] = [];
@@ -66,6 +66,7 @@ export class InfoController {
     public async getGpss(@Ctx() ctx: Koa.BaseContext) {
         const arr = (await UserModel.find({}, { address: 1, _id: 0 })).filter(e => e.address && e.address?.length > 0).map(v => v.address);
         const data = {};
+        let citys: any[] = []
         arr.forEach(element => {
             if (element && element.length > 0) {
                 element.forEach(e => {
@@ -74,14 +75,22 @@ export class InfoController {
                     } else {
                         data[e] = 1;
                     }
+                    if (citys.some(ee => ee.name == e)) {
+                        citys.filter(f => f.name == e)[0]['count'] += 1;
+                    } else {
+                        citys.push({ name: e, count: 1 });
+                    }
                 })
             }
         });
-        return new Result()._success(true)._data(data);
+        citys = citys.sort((a, b) => b.count - a.count);
+        const result = {};
+        citys.forEach(e => { result[e.name] = e.count })
+        return new Result()._success(true)._data(result);
     }
 
     @Get('/location')
-    @Flow([LoginVerify,AdminVerify])
+    @Flow([LoginVerify, AdminVerify])
     public async getUserGpsMap(@Ctx() ctx: Koa.BaseContext) {
         const data = {}
         const result = await UserModel.find({}, { locations: 1, _id: 0 })

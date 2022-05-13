@@ -43,56 +43,56 @@ export default {
     //需要获取到element,所以是onMounted的Hook
     this.myChart1 = echarts.init(document.getElementById("customerChart1"));
     // 绘制图表
-    this.myChart1.setOption({
-      title: { text: "软件打开次数" },
-      tooltip: {},
-      xAxis: {
-        data: dateArr,
-      },
-      yAxis: {},
-      series: [
-        {
-          name: "用户量",
-          type: "line",
-          data: appData,
-        },
-      ],
-    });
+    // this.myChart1.setOption({
+    //   title: { text: "软件打开次数" },
+    //   tooltip: {},
+    //   xAxis: {
+    //     data: dateArr,
+    //   },
+    //   yAxis: {},
+    //   series: [
+    //     {
+    //       name: "用户量",
+    //       type: "line",
+    //       data: appData,
+    //     },
+    //   ],
+    // });
     this.myChart2 = echarts.init(document.getElementById("customerChart2"));
     // 绘制图表
-    this.myChart2.setOption({
-      title: { text: "新用户注册数量" },
-      tooltip: {},
-      xAxis: {
-        data: dateArr,
-      },
-      yAxis: {},
-      series: [
-        {
-          name: "用户量",
-          type: "line",
-          data: userData,
-        },
-      ],
-    });
+    // this.myChart2.setOption({
+    //   title: { text: "新用户注册数量" },
+    //   tooltip: {},
+    //   xAxis: {
+    //     data: dateArr,
+    //   },
+    //   yAxis: {},
+    //   series: [
+    //     {
+    //       name: "用户量",
+    //       type: "line",
+    //       data: userData,
+    //     },
+    //   ],
+    // });
     this.myChart3 = echarts.init(document.getElementById("customerChart3"));
     // 绘制图表
-    this.myChart3.setOption({
-      title: { text: "用户城市分布" },
-      xAxis: {
-        type: "category",
-        data: ["广州", "深圳", "上海", "杭州", "北京", "成都", "南京", "江苏"],
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          data: [4420, 3400, 2150, 1080, 470, 110, 130, 120, 130, 34],
-          type: "bar",
-        },
-      ],
-    });
+    // this.myChart3.setOption({
+    //   title: { text: "用户城市分布" },
+    //   xAxis: {
+    //     type: "category",
+    //     data: ["广州", "深圳", "上海", "杭州", "北京", "成都", "南京", "江苏"],
+    //   },
+    //   yAxis: {
+    //     type: "value",
+    //   },
+    //   series: [
+    //     {
+    //       data: [4420, 3400, 2150, 1080, 470, 110, 130, 120, 130, 34],
+    //       type: "bar",
+    //     },
+    //   ],
+    // });
     this.get("info/day30", (res) => {
       if (res.success) {
         const dates = [];
@@ -148,9 +148,9 @@ export default {
         const dates = [];
         const data = [];
         for (let i of Object.keys(res.data)) {
-          if(i!='null'){
-          dates.push(i);
-          data.push(res.data[i]);
+          if (i != "null") {
+            dates.push(i);
+            data.push(res.data[i]);
           }
         }
         this.myChart3.setOption({

@@ -131,52 +131,59 @@ export class AccountController {
         return new Result()._success(true);
     }
     @Post('/sendemail')
-    public async sendemail(@Body('email') email: string) {
-        // 开启一个 SMTP 连接池
-        var transport = nodemailer.createTransport(smtpTransport({
-            host: "smtp.mxhichina.com", // qq邮箱主机
-            secure: false, // 使用 SSL
-            secureConnection: false, // 使用 SSL
-            port: 25, // SMTP 端口
-            auth: {
-                user: "test@papaz.me", // 账号   你自定义的域名邮箱账号
-                pass: "Abc123456!"    // 密码   你自己开启SMPT获取的密码
-            },
-            tls: {
-                ciphers: 'SSLv3'
-            }
-        }));
-
-
-        // 设置邮件内容  可以拼接html 美化发送内容
-        let htmlcon = '<div style="background:-webkit-linear-gradient(-45deg,  #5edac1 0%,#327dda 100%,#1a7a93 100%);width:100%;height:500px;" >' +
-            '<div style="width: 200px;height:200px;background:url(\'https://avatars5.githubusercontent.com/u/22450881?v=4\') no-repeat; background-size:contain;background-color:#fff; margin:0 auto;position:relative;top:50px; border-radius:5px; box-shadow:2px 2px 2px rgba(1,138,110,.3)">' +
-            '<P style="color:#fff;font-weight:900;text-align:center;position:absolute;bottom:-100px;width: 100%;font-size: 36px;text-shadow:3px 2px 2px rgba(1,138,110,.6)">天气App 验证码</P>' +
-            '<a ' + "" + "" + '" target="_blank" style="background:-webkit-linear-gradient(-45deg,  #4cb1dd 0%,#4bb2dd 100%,#1a7a93 100%);display:block;padding:10px;text-decoration:none;color:#fff;text-align:center;letter-spacing:4px;border-radius:5px;box-shadow:0px 2px 2px 1px rgba(1,138,110,.15);box-sizing:border-box; position:absolute;bottom:-150px;width:200px;">' + '123456' + '</a>' +
-            '</div>' +
-            '</div>';
-
-        var mailOptions = {
-            from: "test@papaz.me", // 发件地址
-            to: ["971340511@qq.com", email], // 收件列表
-            subject: '验证码', // 标题
-            text: "",
-            html: htmlcon // html 内容
+    public async sendemail(@Ctx() ctx: Koa.BaseContext,@Body('email') email: string) {
+        let user = await UserModel.findOne({ email: email });
+        if(user!=null){
+            return new Result()._success(false)._msg('重复的邮箱');
         }
-        transport.sendMail(mailOptions, function (error, response) {
-            let result = new Result()._success(false)._msg('稍后再试');
-            if (error) {
-                console.log("fail: " + error);
-                console.log("发送失败");
-            } else {
-                console.log("发送成功");
-                UserModel.create(new User()._email(email)._verify('123456'));
-                result = new Result()._success(true)._msg('发送成功');
+        // 开启一个 SMTP 连接池
+        return await new Promise((res=>{
+            var transport = nodemailer.createTransport(smtpTransport({
+                host: "smtp.mxhichina.com", // qq邮箱主机
+                secure: false, // 使用 SSL
+                secureConnection: false, // 使用 SSL
+                port: 25, // SMTP 端口
+                auth: {
+                    user: "test@papaz.me", // 账号   你自定义的域名邮箱账号
+                    pass: "Abc123456!"    // 密码   你自己开启SMPT获取的密码
+                },
+                tls: {
+                    ciphers: 'SSLv3'
+                }
+            }));
+    
+    
+            // 设置邮件内容  可以拼接html 美化发送内容
+            let htmlcon = '<div style="background:-webkit-linear-gradient(-45deg,  #5edac1 0%,#327dda 100%,#1a7a93 100%);width:100%;height:500px;" >' +
+                '<div style="width: 200px;height:200px;background:url(\'https://avatars5.githubusercontent.com/u/22450881?v=4\') no-repeat; background-size:contain;background-color:#fff; margin:0 auto;position:relative;top:50px; border-radius:5px; box-shadow:2px 2px 2px rgba(1,138,110,.3)">' +
+                '<P style="color:#fff;font-weight:900;text-align:center;position:absolute;bottom:-100px;width: 100%;font-size: 36px;text-shadow:3px 2px 2px rgba(1,138,110,.6)">天气App 验证码</P>' +
+                '<a ' + "" + "" + '" target="_blank" style="background:-webkit-linear-gradient(-45deg,  #4cb1dd 0%,#4bb2dd 100%,#1a7a93 100%);display:block;padding:10px;text-decoration:none;color:#fff;text-align:center;letter-spacing:4px;border-radius:5px;box-shadow:0px 2px 2px 1px rgba(1,138,110,.15);box-sizing:border-box; position:absolute;bottom:-150px;width:200px;">' + '123456' + '</a>' +
+                '</div>' +
+                '</div>';
+    
+            var mailOptions = {
+                from: "test@papaz.me", // 发件地址
+                to: ["971340511@qq.com", email], // 收件列表
+                subject: '验证码', // 标题
+                text: "",
+                html: htmlcon // html 内容
             }
-            console.log(response)
-            transport.close(); // 如果没用，关闭连接池
-            return result;
-        });
+            transport.sendMail(mailOptions, function (error, response) {
+                let result = new Result()._success(false)._msg('稍后再试');
+                if (error) {
+                    console.log("fail: " + error);
+                    console.log("发送失败");
+                } else {
+                    console.log("发送成功");
+                    UserModel.create(new User()._email(email)._verify('123456'));
+                    result = new Result()._success(true)._msg('发送成功');
+                }
+                console.log(response)
+                transport.close(); // 如果没用，关闭连接池
+                res(result);
+            });
+        }))
+       
     }
 
 }
