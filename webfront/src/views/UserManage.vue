@@ -27,9 +27,7 @@
       <el-table-column label="昵称" prop="nickName"></el-table-column>
       <el-table-column label="地址" prop="address"></el-table-column>
       <el-table-column label="创建时间" prop="addDate"></el-table-column>
-      <el-table-column label="登陆时间" prop="lastLogin"></el-table-column>
       <el-table-column label="地址收藏" prop="locations"></el-table-column>
-      <el-table-column label="定位" prop="gps"></el-table-column>
       <el-table-column label="" prop="gps">
         <template #default="props">
           <el-button @click="changepw(props.row._id)" type="danger">

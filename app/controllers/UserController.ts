@@ -18,8 +18,11 @@ export class UserController {
             params.userName = name;
         }
         if (address) {
-            params.address = address;
+            params.locations = address;
         }
+        // if (address) {
+        //     params.address = address;
+        // }
         const data = await UserModel.find(params, { passWord: 0 }).skip((page - 1) * limit).limit(limit);
         const count = await UserModel.count(params);
         console.log(data)
