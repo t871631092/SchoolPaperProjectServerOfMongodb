@@ -11,6 +11,7 @@ interface IUser {
     email: string,
     role: string,
     gps: number[],
+    verify: string,
 }
 
 @modelOptions({ schemaOptions: { collection: 'User' } })
@@ -34,6 +35,8 @@ class User {
     role?: string;
     @prop()
     email?: string;
+    @prop()
+    verify?: string;
     @prop()
     gps?: number[];
     
@@ -75,6 +78,10 @@ class User {
     }
     public _email(email: string) {
         this.email = email;
+        return this;
+    }
+    public _verify(verify: string) {
+        this.verify = verify;
         return this;
     }
     public _gps(gps: number[]) {

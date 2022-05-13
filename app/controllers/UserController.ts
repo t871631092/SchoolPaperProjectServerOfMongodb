@@ -4,6 +4,7 @@ import { AuthVerify, UserVerify, AdminVerify, LoginVerify } from "../decorator/a
 import { User } from "../models/user.model";
 import { Result } from "../models/result.model";
 import { getModelForClass } from "@typegoose/typegoose";
+const md5 = require("md5");
 const Base_Url = '/user'
 const UserModel = getModelForClass(User)
 @Controller('/user')
@@ -24,19 +25,27 @@ export class UserController {
         console.log(data)
         return new Result()._success(true)._data(data)._count(count);
     }
-    // @AuthVerify('admin')
     @Post('/del')
-    public async delUser(@Ctx() ctx: Koa.BaseContext, @Params('id') id: string) {
+    @Flow([LoginVerify, AdminVerify])
+    public async delUser(@Ctx() ctx: Koa.BaseContext, @Body('id') id: string) {
         await UserModel.findByIdAndDelete(id)
         return new Result()._success(true);
     }
-    // @AuthVerify('admin')
     @Post('/changpw')
-    public async updateUserPassWord(@Ctx() ctx: Koa.BaseContext) {
+    @Flow([LoginVerify, AdminVerify])
+    public async updateUserPassWord(@Ctx() ctx: Koa.BaseContext,@Body('id') id: string) {
+        const user = await UserModel.findOne({_id:id});
+        if(user){
+            user?._passWord(md5('123456'))
+            user?.save();
+            return new Result()._success(true);
+        }else{
+            return new Result()._success(false);
+        }
 
     }
-    // @AuthVerify('admin')
     @Post('/add')
+    @Flow([LoginVerify, AdminVerify])
     public async addUser(@Ctx() ctx: Koa.BaseContext) {
 
     }

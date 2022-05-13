@@ -32,7 +32,7 @@
       <el-table-column label="定位" prop="gps"></el-table-column>
       <el-table-column label="" prop="gps">
         <template #default="props">
-          <el-button @click="delUser(props.row._id)" type="danger">
+          <el-button @click="changepw(props.row._id)" type="danger">
             重置密码
           </el-button>
         </template>
@@ -97,6 +97,16 @@ export default {
       this.post("user/del", { id }, (res, err) => {
         console.log(res);
         if (res.success) {
+          this.$message('注销')
+          this.getUsers();
+        }
+      });
+    },
+    changepw(id) {
+      this.post("user/changpw", { id }, (res, err) => {
+        console.log(res);
+        if (res.success) {
+          this.$message('重置成功')
           this.getUsers();
         }
       });

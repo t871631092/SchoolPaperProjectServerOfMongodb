@@ -9,6 +9,8 @@ import { AccountController } from './controllers/AccountController';
 import { UserController } from './controllers/UserController';
 import { InfoController } from './controllers/InfoController';
 import { Record } from './models/record.model';
+import path = require('path');
+const stati = require('koa-static-server')
 const md5 = require("md5");
 
 const koaApp = new Koa();
@@ -100,7 +102,6 @@ UserModel.findOne({ role: 'user', userName: 'user' }, (error, res) => {
             i++;
         }
     }
-
     const { app, router } = await bootstrapControllers({
         app: koaApp,
         basePath: '/',

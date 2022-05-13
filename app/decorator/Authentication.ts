@@ -58,8 +58,7 @@ export function AdminVerify(ctx: any, next: any) {
     return next();
 }
 export function LoginVerify(ctx: any, next: any) {
-    const role = 'admin';
-    console.log('AuthVerify admin',ctx)
+    console.log('LoginVerify ',ctx)
     if (!ctx.session.islogin) {
         ctx.set('Access-Control-Allow-Origin', ctx.header.origin);
         ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
